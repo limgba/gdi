@@ -7,7 +7,7 @@ public:
 	Actor(LPCWSTR path, int x, int y);
 	virtual ~Actor();
 
-	virtual void LoadBitMapImage(LPCWSTR path);
+	virtual void LoadBitMapImage();
 	virtual void SelectAndBitBlt() const;
 	
 private:

@@ -23,13 +23,16 @@ static const int BITMAP_IMAGE_OBJ_TYPE_PLAYER_MONSTER = LeftOffsetShort(BITMAP_I
 static const int BITMAP_IMAGE_OBJ_TYPE_PLAYER_DROP = LeftOffsetShort(BITMAP_IMAGE_OBJ_TYPE_PLAYER, BITMAP_IMAGE_OBJ_TYPE_DROP);
 static const int BITMAP_IMAGE_OBJ_TYPE_MONSTER_SKILL = LeftOffsetShort(BITMAP_IMAGE_OBJ_TYPE_MONSTER, BITMAP_IMAGE_OBJ_TYPE_SKILL);
 
+//const std::wstring IMAGE_PATH_HEAD(L"../../WindowsProject1/gdi/resource/image/");
+const std::wstring IMAGE_PATH_HEAD(L"gdi/resource/image/");
+
 class BitMapImage
 {
 public:
 	BitMapImage(LPCWSTR path, int x, int y);
 	virtual ~BitMapImage();
-	void ReLoadBitMapImage(LPCWSTR path, int x, int y);
-	virtual void LoadBitMapImage(LPCWSTR path);
+	void ReLoadBitMapImage();
+	virtual void LoadBitMapImage();
 	void SetCoordinate(int x, int y);
 	virtual void SelectAndBitBlt() const;
 
@@ -54,6 +57,7 @@ public:
 	bool IsRigidBody() const;
 	
 protected:
+	LPCWSTR m_path;
 	HBITMAP m_hbitmap = nullptr;
 	int m_x = 0;
 	int m_y = 0;

@@ -12,7 +12,9 @@
 
 BitMapImage::BitMapImage(LPCWSTR path, int x, int y)
 {
-	this->ReLoadBitMapImage(path, x, y);
+	m_path = path;
+	m_x = x;
+	m_y = y;
 }
 
 BitMapImage::~BitMapImage()
@@ -23,19 +25,19 @@ BitMapImage::~BitMapImage()
 	}
 }
 
-void BitMapImage::ReLoadBitMapImage(LPCWSTR path, int x, int y)
+void BitMapImage::ReLoadBitMapImage()
 {
-	this->LoadBitMapImage(path);
-	this->SetCoordinate(x, y);
+	this->LoadBitMapImage();
+	this->SetCoordinate(m_x, m_y);
 }
 
-void BitMapImage::LoadBitMapImage(LPCWSTR path)
+void BitMapImage::LoadBitMapImage()
 {
 	if (m_hbitmap != nullptr)
 	{
 		DeleteObject(m_hbitmap);
 	}
-	m_hbitmap = (HBITMAP)LoadImage(NULL, path, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+	m_hbitmap = (HBITMAP)LoadImage(NULL, m_path, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
 	BITMAP bmp;
 	GetObject(m_hbitmap, sizeof(BITMAP), &bmp);
 	m_cx = bmp.bmWidth;

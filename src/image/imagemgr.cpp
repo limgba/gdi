@@ -85,6 +85,7 @@ void BitMapImageMgr::PushBitMapImage(BitMapImage* image)
 	{
 		return;
 	}
+	image->ReLoadBitMapImage();
 	m_image_list.push_back(image);
 
 	if (image->IsRigidBody())

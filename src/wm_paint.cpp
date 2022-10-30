@@ -20,7 +20,8 @@ void MyPaint(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam, HDC hdc, PAI
 	if (0 == BitMapImageMgr::Instance().ImageCount())
 	{
 		{
-			BackGroundImage* bmp = new BackGroundImage(L"background/ndmz1.bmp", 0, 0);
+			std::wstring path = IMAGE_PATH_HEAD + L"background/ndmz.bmp";
+			BackGroundImage* bmp = new BackGroundImage(path.c_str(), 0, 0);
 			bmp->SetIsRigidbody(false);
 			bmp->SetObjType(BITMAP_IMAGE_OBJ_TYPE_BACK_GROUND);
 			bmp->SetLayer(0.0);
@@ -28,7 +29,8 @@ void MyPaint(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam, HDC hdc, PAI
 		}
 
 		{
-			Actor* bmp = new Actor(L"picture/jiantou.bmp", 0, 0);
+			std::wstring path = IMAGE_PATH_HEAD + L"picture/jiantou.bmp";
+			Actor* bmp = new Actor(path.c_str(), 0, 0);
 			bmp->SetIsRigidbody(true);
 			bmp->SetObjType(BITMAP_IMAGE_OBJ_TYPE_PLAYER);
 			bmp->SetLayer(1.0);
@@ -36,7 +38,8 @@ void MyPaint(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam, HDC hdc, PAI
 		}
 
 		{
-			Actor* bmp = new Actor(L"picture/jiantou.bmp", cx / 2, cy / 2);
+			std::wstring path = IMAGE_PATH_HEAD + L"picture/jiantou.bmp";
+			Actor* bmp = new Actor(path.c_str(), cx / 2, cy / 2);
 			bmp->SetIsRigidbody(true);
 			bmp->SetObjType(BITMAP_IMAGE_OBJ_TYPE_SKILL);
 			bmp->SetLayer(2.0);

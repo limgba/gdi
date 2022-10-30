@@ -15,15 +15,19 @@ Actor::~Actor()
 	}
 }
 
-void Actor::LoadBitMapImage(LPCWSTR path)
+void Actor::LoadBitMapImage()
 {
-	BitMapImage::LoadBitMapImage(path);
+	BitMapImage::LoadBitMapImage();
 
-	std::wstring mask_path(L"mask/");
-	std::wstring wstr(path);
+	if (nullptr != m_hbitmap_mask)
+	{
+		DeleteObject(m_hbitmap_mask);
+	}
+
+	std::wstring wstr(m_path);
 	wstr = wstr.substr(wstr.find_last_of('/'));
 	wstr = wstr.substr(wstr.find_first_not_of('/'));
-	mask_path += wstr;
+	std::wstring mask_path = IMAGE_PATH_HEAD + L"mask/" + wstr;;
 	m_hbitmap_mask = (HBITMAP)LoadImage(NULL, mask_path.c_str(), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
 }
 
