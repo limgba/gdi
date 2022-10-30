@@ -1,0 +1,29 @@
+
+
+碰撞
+	技能	消失
+	技能	穿过
+	反弹
+	停下
+弹力
+重力
+
+
+animation
+	index
+	image_list
+	can_start
+	can_end
+move_background
+scene
+	coord_limit
+	way_finding
+config
+attribute
+
+object
+	from_status
+	to_status
+	animation
+
+
