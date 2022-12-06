@@ -5,6 +5,7 @@
 #include "image/background.h"
 #include "image/actor.h"
 #include "image/imagemgr.h"
+#include "image/animationmgr.h"
 #include "wm_paint.h"
 #include "shape.h"
 #include <winuser.h>
@@ -47,6 +48,7 @@ void MyPaint(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam, HDC hdc, PAI
 		}
 	}
 
+	//AnimationMgr::Instance().Play();
 	BitMapImageMgr::Instance().CollisionCheck();
 	BitMapImageMgr::Instance().SelectAndBitBltAll();
 
