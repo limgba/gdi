@@ -1,13 +1,10 @@
 #pragma once
-#include "image.h"
+#include "../obj.h"
 
-class BackGroundImage : public BitMapImage
+class Scene : public Obj
 {
 public:
-	BackGroundImage(LPCWSTR path, int x, int y);
-	~BackGroundImage();
-
-public:
+	virtual int GetObjType() { return BITMAP_IMAGE_OBJ_TYPE_SCENE; }
 	void SetOffsetX(int x) { m_offset_x = x; }
 	void SetOffsetY(int y) { m_offset_y = y; }
 	void SetMoveX(int x) { m_move_x = x; }

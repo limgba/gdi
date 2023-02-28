@@ -1,15 +1,20 @@
 #include "../../framework.h"
 #include "../../WindowsProject1.h"
 #include "hdcmgr/hdcmgr.h"
-#include "image/image.h"
-#include "image/background.h"
-#include "image/actor.h"
-#include "image/imagemgr.h"
-#include "image/animationmgr.h"
+#include "image/bitmapimage.h"
+#include "obj/objimpl/scene.h"
+#include "obj/objimpl/actor.h"
+#include "obj/controlobjmgr.h"
+#include "obj/rigidbodymgr.h"
+#include "obj/objmgr.h"
+#include "animation/animationmgr.h"
+#include "animation/animation.h"
 #include "wm_paint.h"
 #include "shape.h"
 #include <winuser.h>
 #include <string>
+#include "image/imagebase.h"
+#include "image/imageimpl.h"
 
 void MyPaint(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam, HDC hdc, PAINTSTRUCT* ps)
 {
@@ -18,71 +23,91 @@ void MyPaint(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam, HDC hdc, PAI
 
 	HdcMgr::Instance().CreateDCAndBitMap(hdc, cx, cy);
 
-	if (0 == BitMapImageMgr::Instance().ImageCount())
+	if (0 == AnimationMgr::Instance().AnimationSize())
 	{
 		{
 			std::wstring path = IMAGE_PATH_HEAD + L"background/ndmz.bmp";
-			BackGroundImage* bmp = new BackGroundImage(path.c_str(), 0, 0);
-			bmp->SetIsRigidbody(false);
-			bmp->SetObjType(BITMAP_IMAGE_OBJ_TYPE_BACK_GROUND);
-			bmp->SetLayer(0.0);
-			BitMapImageMgr::Instance().PushBitMapImage(bmp);
+			BitMapImage* bmp = new BitMapImage(path.c_str());
+
+			ImageBase* image = new ImageBase();
+			image->SetBitMapImage(bmp);
+			image->SetIntervalMs(0);
+			image->SetNextIndex(0);
+
+			Animation* animation = new Animation();
+			animation->InitClock();
+			animation->SetLayer(0.0);
+			animation->PushImageBase(image);
+			AnimationMgr::Instance().PushAnimation(animation);
+
+			Scene* scene = new Scene();
+			scene->SetAnimation(animation);
+			animation->SetObj(scene);
+			ObjMgr::Instance().AddObj(scene);
 		}
 
 		{
-			std::wstring path = IMAGE_PATH_HEAD + L"picture/jiantou.bmp";
-			Actor* bmp = new Actor(path.c_str(), 0, 0);
-			bmp->SetIsRigidbody(true);
-			bmp->SetObjType(BITMAP_IMAGE_OBJ_TYPE_PLAYER);
-			bmp->SetLayer(1.0);
-			BitMapImageMgr::Instance().PushBitMapImage(bmp);
+			Animation* animation = new Animation();
+			animation->InitClock();
+			animation->SetLayer(0.0);
+			for (int i = 0; i < 2; ++i)
+			{
+				std::wstring path = IMAGE_PATH_HEAD + L"picture/jiantou" + std::to_wstring(i) + L".bmp";
+				BitMapImage* bmp = new BitMapImage(path.c_str());
+
+				std::wstring mask_path = IMAGE_PATH_HEAD + L"mask/jiantou" + std::to_wstring(i) + L".bmp";
+				BitMapImage* mask_bmp = new BitMapImage(mask_path.c_str());
+
+				ImageImpl* image = new ImageImpl();
+				image->SetBitMapImage(bmp);
+				image->SetMaskBitMapImage(mask_bmp);
+				image->SetIntervalMs(0);
+				image->SetNextIndex(0);
+				animation->PushImageBase(image);
+			}
+
+			AnimationMgr::Instance().PushAnimation(animation);
+
+			Actor* actor = new Actor();
+			actor->SetIsRigidbody(true);
+			actor->SetAnimation(animation);
+			animation->SetObj(actor);
+			ObjMgr::Instance().AddObj(actor);
+			ControlObjMgr::Instance().PushControlObj(actor);
 		}
 
-		{
-			std::wstring path = IMAGE_PATH_HEAD + L"picture/jiantou.bmp";
-			Actor* bmp = new Actor(path.c_str(), cx / 2, cy / 2);
-			bmp->SetIsRigidbody(true);
-			bmp->SetObjType(BITMAP_IMAGE_OBJ_TYPE_SKILL);
-			bmp->SetLayer(2.0);
-			BitMapImageMgr::Instance().PushBitMapImage(bmp);
-		}
+		AnimationMgr::Instance().DirtyLayer();
 	}
 
-	//AnimationMgr::Instance().Play();
-	BitMapImageMgr::Instance().CollisionCheck();
-	BitMapImageMgr::Instance().SelectAndBitBltAll();
+	RigidBodyMgr::Instance().CollisionCheck();
+	AnimationMgr::Instance().Play();
 
 	BitBlt(hdc, 0, 0, cx, cy, HdcMgr::Instance().GetHdc1(), 0, 0, SRCCOPY);
 }
 
 void OnKeyDown(WPARAM wParam, LPARAM lParam)
 {
-	BitMapImage* image = BitMapImageMgr::Instance().GetBitMapImage(1);
-	if (nullptr == image)
-	{
-		return;
-	}
 	int add = 10;
 	switch (wParam)
 	{
 	case 'W':
 	{
-		image->SetCoordinate(image->x(), image->y() - add);
+		ControlObjMgr::Instance().ChangeObjCoordinate(0, -add);
 	}
 	break;
 	case 'A':
 	{
-		image->SetCoordinate(image->x() - add, image->y());
+		ControlObjMgr::Instance().ChangeObjCoordinate(-add, 0);
 	}
 	break;
 	case 'S':
 	{
-		image->SetCoordinate(image->x(), image->y() + add);
+		ControlObjMgr::Instance().ChangeObjCoordinate(0, add);
 	}
 	break;
 	case 'D':
 	{
-		image->SetCoordinate(image->x() + add, image->y());
+		ControlObjMgr::Instance().ChangeObjCoordinate(add, 0);
 	}
 	break;
 	}
@@ -90,18 +115,14 @@ void OnKeyDown(WPARAM wParam, LPARAM lParam)
 
 void OnRightButtonDown(WPARAM wParam, LPARAM lParam)
 {
-	BitMapImage* image = BitMapImageMgr::Instance().GetBitMapImage(1);
-	if (nullptr == image)
-	{
-		return;
-	}
 	int x = LOWORD(lParam);
 	int y = HIWORD(lParam);
-	image->SetCoordinate(x, y);
+	ControlObjMgr::Instance().ChangeObjCoordinate(10, 10);
 }
 
 void DeleteDCAndBitMapAndImage()
 {
-	BitMapImageMgr::Instance().DeleteAllBitMapImage();
+	AnimationMgr::Instance().DeleteAllAnimation();
+	ObjMgr::Instance().DeleteAllObj();
 	HdcMgr::Instance().DeleteDCAndBitMap();
 }

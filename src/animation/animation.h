@@ -1,7 +1,9 @@
 #pragma once
 #include <vector>
 #include <time.h>
-#include "image.h"
+
+class ImageBase;
+class Obj;
 
 // 每秒帧数
 static const int FRAME_PER_SECOND = 60;
@@ -10,23 +12,25 @@ static const int FILL_THE_FRAME = 4;
 // 每帧消耗毫秒数
 static const int FRAME_MILLISECOND = static_cast<int>(1.0 / FRAME_PER_SECOND * 1000);
 
-struct FrameImage
-{
-	int intervel_ms = 0;
-	int next_index = 0;
-	BitMapImage* image = nullptr;
-};
 
 class Animation
 {
 public:
-	void Push(FrameImage frame_image);
+	~Animation();
+	void SetObj(Obj* obj);
+	Obj* GetObj();
+	void PushImageBase(ImageBase* image_base);
 	void InitClock();
 	void Play(clock_t now_clock);
-	double GetLayer(size_t index) const;
+	void SetLayer(double layer);
+	double GetLayer() const;
+	const std::vector<ImageBase*>& GetImageVec();
+	ImageBase* GetImageBase();
 	
 private:
 	size_t m_index = 0;
 	clock_t m_clock = 0;
-	std::vector<FrameImage> m_image_list;
+	double m_layer = 0.0;
+	std::vector<ImageBase*> m_image_list;
+	Obj* m_obj = nullptr;
 };
