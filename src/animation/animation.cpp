@@ -1,6 +1,6 @@
 #include "animation.h"
 #include "../image/imagebase.h"
-#include "../image/bitmapImage.h"
+#include "../image/bitmapimage.h"
 #include "../obj/rigidbodymgr.h"
 #include "../obj/obj.h"
 
@@ -75,13 +75,13 @@ void Animation::Play(clock_t now_clock)
 	{
 	case BITMAP_IMAGE_OBJ_TYPE_SCENE:
 	{
-		image_base->GetBitMapImage()->SelectAndBitBlt(m_obj->x(), m_obj->y());
+		image_base->GetBitMapImage()->SelectAndBitBlt(m_obj->x(), m_obj->y(), SRCCOPY);
 	}
 	break;
 	default:
 	{
-		image_base->GetMaskBitMapImage()->SelectAndBitBlt(m_obj->x(), m_obj->y());
-		image_base->GetBitMapImage()->SelectAndBitBlt(m_obj->x(), m_obj->y());
+		image_base->GetMaskBitMapImage()->SelectAndBitBlt(m_obj->x(), m_obj->y(), SRCAND);
+		image_base->GetBitMapImage()->SelectAndBitBlt(m_obj->x(), m_obj->y(), SRCPAINT);
 	}
 	break;
 	}

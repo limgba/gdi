@@ -1,4 +1,4 @@
-#include "bitmapImage.h"
+#include "bitmapimage.h"
 #include "imageimpl.h"
 
 ImageImpl::~ImageImpl()

@@ -35,12 +35,12 @@ void BitMapImage::LoadBitMapImage()
 	m_cy = bmp.bmHeight;
 }
 
-void BitMapImage::SelectAndBitBlt(int x, int y) const
+void BitMapImage::SelectAndBitBlt(int x, int y, int operations) const
 {
 	HDC hdc1 = HdcMgr::Instance().GetHdc1();
 	HDC hdc2 = HdcMgr::Instance().GetHdc2();
 
 	SelectObject(hdc2, m_hbitmap);
-	BitBlt(hdc1, x, y, m_cx, m_cy, hdc2, 0, 0, SRCCOPY);
+	BitBlt(hdc1, x, y, m_cx, m_cy, hdc2, 0, 0, operations);
 }
 

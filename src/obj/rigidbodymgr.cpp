@@ -1,6 +1,6 @@
 #include "rigidbodymgr.h"
 #include "../image/imagebase.h"
-#include "../image/bitmapImage.h"
+#include "../image/bitmapimage.h"
 #include "../animation/animation.h"
 #include "../obj/obj.h"
 #include "../shape.h"

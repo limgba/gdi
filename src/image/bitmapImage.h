@@ -11,7 +11,7 @@ public:
 	BitMapImage(LPCWSTR path);
 	virtual ~BitMapImage();
 	void LoadBitMapImage();
-	void SelectAndBitBlt(int x, int y) const;
+	void SelectAndBitBlt(int x, int y, int operations) const;
 
 	int cx() { return m_cx; }
 	int cy() { return m_cy; }
