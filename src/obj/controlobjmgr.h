@@ -9,6 +9,7 @@ public:
 
 	void PushControlObj(Obj* obj);
 	void RemoveControlObj(Obj* obj);
+	void SetObjCoordinate(int x, int y);
 	void ChangeObjCoordinate(int x, int y);
 	
 private:

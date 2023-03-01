@@ -13,7 +13,7 @@ void Actor::OnImpact(Obj* obj)
 	{
 	case BITMAP_IMAGE_OBJ_TYPE_SKILL:
 	{
-		ControlObjMgr::Instance().ChangeObjCoordinate(0, 0);
+		ControlObjMgr::Instance().SetObjCoordinate(0, 0);
 	}
 	break;
 	}

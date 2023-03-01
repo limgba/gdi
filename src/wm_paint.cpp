@@ -4,6 +4,7 @@
 #include "image/bitmapimage.h"
 #include "obj/objimpl/scene.h"
 #include "obj/objimpl/actor.h"
+#include "obj/objimpl/skill.h"
 #include "obj/controlobjmgr.h"
 #include "obj/rigidbodymgr.h"
 #include "obj/objmgr.h"
@@ -40,18 +41,15 @@ void MyPaint(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam, HDC hdc, PAI
 			animation->PushImageBase(image);
 			AnimationMgr::Instance().PushAnimation(animation);
 
-			Scene* scene = new Scene();
-			scene->SetAnimation(animation);
-			animation->SetObj(scene);
-			ObjMgr::Instance().AddObj(scene);
+			Obj* obj = new Scene();
+			obj->SetAnimation(animation);
+			animation->SetObj(obj);
+			ObjMgr::Instance().AddObj(obj);
 		}
 
 		{
-			Animation* animation = new Animation();
-			animation->InitClock();
-			animation->SetLayer(0.0);
-			for (int i = 0; i < 2; ++i)
 			{
+				int i = 0;
 				std::wstring path = IMAGE_PATH_HEAD + L"picture/jiantou" + std::to_wstring(i) + L".bmp";
 				BitMapImage* bmp = new BitMapImage(path.c_str());
 
@@ -63,17 +61,51 @@ void MyPaint(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam, HDC hdc, PAI
 				image->SetMaskBitMapImage(mask_bmp);
 				image->SetIntervalMs(0);
 				image->SetNextIndex(0);
+
+				Animation* animation = new Animation();
+				animation->InitClock();
+				animation->SetLayer(1.0);
 				animation->PushImageBase(image);
+
+				AnimationMgr::Instance().PushAnimation(animation);
+
+				Obj* obj = new Actor();
+				obj->SetIsRigidbody(true);
+				obj->SetAnimation(animation);
+				animation->SetObj(obj);
+				ObjMgr::Instance().AddObj(obj);
+				ControlObjMgr::Instance().PushControlObj(obj);
 			}
 
-			AnimationMgr::Instance().PushAnimation(animation);
+			if (1)
+			{
+				int i = 1;
+				std::wstring path = IMAGE_PATH_HEAD + L"picture/jiantou" + std::to_wstring(i) + L".bmp";
+				BitMapImage* bmp = new BitMapImage(path.c_str());
 
-			Actor* actor = new Actor();
-			actor->SetIsRigidbody(true);
-			actor->SetAnimation(animation);
-			animation->SetObj(actor);
-			ObjMgr::Instance().AddObj(actor);
-			ControlObjMgr::Instance().PushControlObj(actor);
+				std::wstring mask_path = IMAGE_PATH_HEAD + L"mask/jiantou" + std::to_wstring(i) + L".bmp";
+				BitMapImage* mask_bmp = new BitMapImage(mask_path.c_str());
+
+				ImageImpl* image = new ImageImpl();
+				image->SetBitMapImage(bmp);
+				image->SetMaskBitMapImage(mask_bmp);
+				image->SetIntervalMs(0);
+				image->SetNextIndex(0);
+
+				Animation* animation = new Animation();
+				animation->InitClock();
+				animation->SetLayer(2.0);
+				animation->PushImageBase(image);
+
+				AnimationMgr::Instance().PushAnimation(animation);
+
+				Obj* obj = new Skill();
+				obj->SetAnimation(animation);
+				obj->SetCoordinate(200, 200);
+				obj->SetIsRigidbody(true);
+				animation->SetObj(obj);
+				ObjMgr::Instance().AddObj(obj);
+			}
 		}
 
 		AnimationMgr::Instance().DirtyLayer();

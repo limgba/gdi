@@ -35,6 +35,15 @@ void ControlObjMgr::RemoveControlObj(Obj* obj)
 	}
 }
 
+void ControlObjMgr::SetObjCoordinate(int x, int y)
+{
+	for (auto* obj : m_control_obj_list)
+	{
+		obj->SetCoordinate(x, y);
+		RigidBodyMgr::Instance().OnObjMove(obj);
+	}
+}
+
 void ControlObjMgr::ChangeObjCoordinate(int x, int y)
 {
 	for (auto* obj : m_control_obj_list)
