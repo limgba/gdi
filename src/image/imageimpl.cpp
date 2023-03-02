@@ -13,6 +13,10 @@ ImageImpl::~ImageImpl()
 void ImageImpl::SetMaskBitMapImage(BitMapImage* bitmap_image)
 {
 	m_mask_bitmap_image = bitmap_image;
+	if (nullptr != m_mask_bitmap_image)
+	{
+		m_mask_bitmap_image->LoadBitMapImage();
+	}
 }
 
 BitMapImage* ImageImpl::GetMaskBitMapImage()
