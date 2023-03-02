@@ -21,6 +21,7 @@ public:
 	Obj* GetObj();
 	void PushImageBase(ImageBase* image_base);
 	void InitClock();
+	void SetLoop(bool is_loop);
 	void Play(clock_t now_clock);
 	void SetLayer(double layer);
 	double GetLayer() const;
@@ -30,6 +31,7 @@ public:
 private:
 	size_t m_index = 0;
 	clock_t m_clock = 0;
+	bool m_is_loop = true;
 	double m_layer = 0.0;
 	std::vector<ImageBase*> m_image_list;
 	Obj* m_obj = nullptr;

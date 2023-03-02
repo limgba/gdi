@@ -40,6 +40,7 @@ public:
 	int GetObjId() const;
 	void SetIsRigidbody(bool is_rigid_body);
 	bool IsRigidBody() const;
+	int m_obj_type = 0;
 
 private:
 	static int m_auto_inc_id;

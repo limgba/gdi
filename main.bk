@@ -3,8 +3,9 @@
 
 #include "framework.h"
 #include "WindowsProject1.h"
-#include "gdi/src/clipboard.h"
 #include "gdi/src/wm_paint.h"
+#include "gdi/src/animation/animationmgr.h"
+#include <thread>
 
 #define MAX_LOADSTRING 100
 
@@ -12,6 +13,7 @@
 HINSTANCE hInst;                                // 当前实例
 WCHAR szTitle[MAX_LOADSTRING];                  // 标题栏文本
 WCHAR szWindowClass[MAX_LOADSTRING];            // 主窗口类名
+clock_t clock_start;
 
 // 此代码模块中包含的函数的前向声明:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -109,6 +111,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
+   OnSetTimer(hWnd);
 
    return TRUE;
 }
@@ -155,9 +158,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         }
         break;
     case WM_DESTROY:
-        DeleteDCAndBitMapAndImage();
-        PostQuitMessage(0);
-        break;
+	{
+        OnDestroy(hWnd);
+		PostQuitMessage(0);
+	}
+	break;
     case WM_MOVE:
     {
         InvalidateRect(hWnd, NULL, false);
@@ -170,36 +175,24 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     break;
     case WM_KEYDOWN:
     {
-        //MessageBox(hWnd, TEXT("hhh"), TEXT("fff"), MB_OK | MB_ICONINFORMATION);
-        //code for saving bitmap
-        //if (::OpenClipboard(NULL))
-        //{
-        //    HBITMAP hBitmap = (HBITMAP)GetClipboardData(CF_BITMAP); //这一句返回NULL
-        //    HDC hdc = GetDC(NULL);
-        //    PBITMAPINFO pBitmapInfo = CreateBitmapInfoStruct(hBitmap);
-        //    CreateBMPFile((LPTSTR)_T("c:\\temp\\picture.bmp"), pBitmapInfo, hBitmap, hdc);
-        //    ReleaseDC(NULL, hdc);
-
-        //    rx += 20;
-        //    ry += 10;
-        //    if (rx > 800)
-        //    {
-        //        rx = 0;
-        //    }
-        //    if (ry > 400)
-        //    {
-        //        ry = 0;
-        //    }
-        //}
-        //::CloseClipboard();
         OnKeyDown(wParam, lParam);
         InvalidateRect(hWnd, NULL, false);
     }
     break;
+    case WM_LBUTTONDOWN:
+    {
+        OnLeftButtonDown(hWnd, wParam, lParam);
+    }
+    break;
     case WM_RBUTTONDOWN:
     {
-        OnRightButtonDown(wParam, lParam);
+        OnRightButtonDown(hWnd, wParam, lParam);
         InvalidateRect(hWnd, NULL, false);
+    }
+    break;
+    case WM_TIMER:
+    {
+        OnTimer(hWnd, wParam, lParam);
     }
     break;
     default:
@@ -227,3 +220,4 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
     }
     return (INT_PTR)FALSE;
 }
+

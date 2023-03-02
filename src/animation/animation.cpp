@@ -42,6 +42,11 @@ void Animation::InitClock()
 	m_clock = clock();
 }
 
+void Animation::SetLoop(bool is_loop)
+{
+	m_is_loop = is_loop;
+}
+
 void Animation::Play(clock_t now_clock)
 {
 	if (m_index >= m_image_list.size())
@@ -59,7 +64,12 @@ void Animation::Play(clock_t now_clock)
 		m_index = image_base->GetNextIndex();
 		if (m_index >= m_image_list.size())
 		{
-			return;
+			if (!m_is_loop)
+			{
+				return;
+			}
+			m_index = 0;
+			m_clock = now_clock;
 		}
 		image_base = m_image_list[m_index];
 		if (nullptr == image_base)

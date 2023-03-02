@@ -19,7 +19,6 @@ HdcMgr::HdcMgr()
 
 HdcMgr::~HdcMgr()
 {
-	this->DeleteDCAndBitMap();
 }
 
 void HdcMgr::CreateDCAndBitMap(HDC hdc, int cx, int cy)
