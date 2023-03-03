@@ -15,7 +15,10 @@ void ObjMgr::DeleteAllObj()
 {
 	for (auto pair : m_obj_unordered_map)
 	{
-		Obj* obj = pair.second;
+		if (nullptr == pair.second)
+		{
+			continue;
+		}
 		this->RemoveLink(pair.second);
 
 		delete pair.second;

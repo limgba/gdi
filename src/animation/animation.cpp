@@ -8,6 +8,10 @@ Animation::~Animation()
 {
 	for (ImageBase* image_base : m_image_list)
 	{
+		if (nullptr == image_base)
+		{
+			continue;
+		}
 		delete image_base;
 		image_base = nullptr;
 	}

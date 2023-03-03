@@ -29,10 +29,7 @@ void ControlObjMgr::RemoveControlObj(Obj* obj)
 	{
 		return;
 	}
-	for (auto it = delete_it; it != m_control_obj_list.end(); ++it)
-	{
-		m_control_obj_list.erase(it);
-	}
+	m_control_obj_list.erase(delete_it, m_control_obj_list.end());
 }
 
 void ControlObjMgr::SetObjCoordinate(int x, int y)

@@ -19,6 +19,7 @@ BitMapImage::~BitMapImage()
 	if (nullptr != m_hbitmap)
 	{
 		DeleteObject(m_hbitmap);
+		m_hbitmap = nullptr;
 	}
 }
 

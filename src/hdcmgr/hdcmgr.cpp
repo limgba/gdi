@@ -44,6 +44,11 @@ void HdcMgr::DeleteDCAndBitMap()
 	SelectObject(m_hdc1, m_old_bmp1);
 	DeleteObject(m_hcbmp1);
 	DeleteObject(m_hdc1);
+
+	m_hdc1 = nullptr;
+	m_hcbmp1 = nullptr;
+	m_hdc2 = nullptr;
+	m_hcbmp2 = nullptr;
 }
 
 HDC HdcMgr::GetHdc1()
