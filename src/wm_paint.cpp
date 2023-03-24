@@ -1,5 +1,7 @@
 #include "../../framework.h"
 #include "../../WindowsProject1.h"
+#include <winuser.h>
+#include <string>
 #include "wm_paint.h"
 #include "clipboard.h"
 #include "shape.h"
@@ -15,8 +17,7 @@
 #include "obj/objimpl/scene.h"
 #include "obj/objimpl/actor.h"
 #include "obj/objimpl/skill.h"
-#include <winuser.h>
-#include <string>
+#include "obj/objimpl/monster.h"
 
 #define TIMER_ID_1 1
 
@@ -59,10 +60,12 @@ void MyPaint(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam, HDC hdc, PAI
 		{
 			{
 				int i = 0;
-				std::wstring path = IMAGE_PATH_HEAD + L"picture/jiantou" + std::to_wstring(i) + L".bmp";
+				//std::wstring path = IMAGE_PATH_HEAD + L"picture/jiantou" + std::to_wstring(i) + L".bmp";
+				std::wstring path = IMAGE_PATH_HEAD + L"picture/white.bmp";
 				BitMapImage* bmp = new BitMapImage(path.c_str());
 
-				std::wstring mask_path = IMAGE_PATH_HEAD + L"mask/jiantou" + std::to_wstring(i) + L".bmp";
+				std::wstring mask_path = IMAGE_PATH_HEAD + L"mask/white.bmp";
+				//std::wstring mask_path = IMAGE_PATH_HEAD + L"mask/jiantou" + std::to_wstring(i) + L".bmp";
 				BitMapImage* mask_bmp = new BitMapImage(mask_path.c_str());
 
 				ImageImpl* image = new ImageImpl();
@@ -88,10 +91,12 @@ void MyPaint(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam, HDC hdc, PAI
 
 			{
 				int i = 1;
-				std::wstring path = IMAGE_PATH_HEAD + L"picture/jiantou" + std::to_wstring(i) + L".bmp";
+				//std::wstring path = IMAGE_PATH_HEAD + L"picture/jiantou" + std::to_wstring(i) + L".bmp";
+				std::wstring path = IMAGE_PATH_HEAD + L"picture/white1.bmp";
 				BitMapImage* bmp = new BitMapImage(path.c_str());
 
-				std::wstring mask_path = IMAGE_PATH_HEAD + L"mask/jiantou" + std::to_wstring(i) + L".bmp";
+				std::wstring mask_path = IMAGE_PATH_HEAD + L"mask/white1.bmp";
+				//std::wstring mask_path = IMAGE_PATH_HEAD + L"mask/jiantou" + std::to_wstring(i) + L".bmp";
 				BitMapImage* mask_bmp = new BitMapImage(mask_path.c_str());
 
 				ImageImpl* image = new ImageImpl();
@@ -107,7 +112,7 @@ void MyPaint(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam, HDC hdc, PAI
 
 				AnimationMgr::Instance().PushAnimation(animation);
 
-				Obj* obj = new Skill();
+				Obj* obj = new Monster();
 				obj->SetAnimation(animation);
 				obj->SetCoordinate(200, 200);
 				obj->SetIsRigidbody(true);
@@ -130,7 +135,7 @@ void MyPaint(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam, HDC hdc, PAI
 					ImageImpl* image = new ImageImpl();
 					image->SetBitMapImage(bmp);
 					image->SetMaskBitMapImage(mask_bmp);
-					image->SetIntervalMs(1000 + i * 1000);
+					image->SetIntervalMs(500 + i * 500);
 					image->SetNextIndex(i + 1);
 					animation->PushImageBase(image);
 				}
@@ -138,7 +143,7 @@ void MyPaint(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam, HDC hdc, PAI
 
 				Obj* obj = new Skill();
 				obj->SetAnimation(animation);
-				obj->SetCoordinate(400, 300);
+				obj->SetCoordinate(700, 300);
 				obj->SetIsRigidbody(true);
 				obj->m_obj_type = 1;
 				animation->SetObj(obj);
