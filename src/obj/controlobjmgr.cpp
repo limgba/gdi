@@ -39,6 +39,7 @@ void ControlObjMgr::SetObjCoordinate(int x, int y)
 		obj->SetCoordinate(x, y);
 		RigidBodyMgr::Instance().OnObjMove(obj);
 	}
+	RigidBodyMgr::Instance().CollisionCheck();
 }
 
 void ControlObjMgr::ChangeObjCoordinate(int x, int y)
@@ -48,5 +49,6 @@ void ControlObjMgr::ChangeObjCoordinate(int x, int y)
 		obj->SetCoordinate(obj->x() + x, obj->y() + y);
 		RigidBodyMgr::Instance().OnObjMove(obj);
 	}
+	RigidBodyMgr::Instance().CollisionCheck();
 }
 
